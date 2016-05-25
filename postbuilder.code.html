@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Sahaptin Learning Materials Archive Post Builder</title>
+<style TYPE="text/css">
+@import url(http://fonts.googleapis.com/css?family=Montserrat);
+body {font-size: 1em; font-weight: normal; font-family: 'Montserrat', sans-serif;} 
+h2 {font-size: 1.65em; font-weight: bold; line-height: 1.5em; margin: 0;}
+h3 {font-size: 1.25em; font-weight: bold; line-height: 1.25em; margin: 0;}
+p {margin: 0px 10px 10px 10px;}
+input {width: 160px; height: 15px; padding: 4px; margin-right: 5px;}
+a {text-decoration: none;}
+
+
+
+
+
+</style>
+
+  
+
+</head>
+<body>
+<div style="width: 100%; background-color: #22387E; height: 50px; text-align: center; padding-top: 6px;">
+<div style="background-color: transparent; float: left; margin: 0px 0px 0px 30px;">
+<a href="http://depts.washington.edu/sahteach/" style="color: #fff">Return to the Archive</a><br/>
+</div>
+
+<div style="background-color: transparent; float: right; margin: 0px 30px 0px 0px;">
+<a href="postbuilderhelp.php" style="color: #fff">HELP</a>
+</div>
+
+<h2 style="color: #fff; margin: 0 auto;">Sahaptin/Yakama Archive Post Builder</h2>
+
+
+<div style="clear:both;"></div>
+</div>
+<div style="float: right; margin-left: 0px; width:60%;">
+<div style="width: 100%; background-color: #D4637E; text-align: center; height: 35px; margin: 0;">
+<h3 style="color: #fff; position: relative; top: 5px;">Post Code(Generated after Submit)</h3>
+</div>
+<div style="padding: 100px 100px 150px 100px; font-size: 0.5em;">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php
+if(isset($_POST['submit']))
+{
+
+
+
+//Covert Resource Format to a three character string to embed below
+$resourceformattrimmed = ltrim($_POST['resourceformat'], 'application');
+$resourceformattrimmed = str_replace('/', '', $resourceformattrimmed);
+$resourceformattrimmed = strtoupper($resourceformattrimmed);
+
+//This more tag tells the WP Post Teaser plugin to omit everything below it from the search results. This is so the PDF link doesn't show up in the results to confuse people.
+echo("&lt;!--more--&gt;");
+
+echo("&lt;p class=\"posttext\"&gt;&lt;strong&gt; ".$resourceformattrimmed.": &lt;a href=\"".$_POST['resourceURL']."\"&gt;".$_POST['resourceFilename']."&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;<br/>");
+
+if (!empty($_POST['resourcedescription'])){
+echo("&lt;p class=\"posttext\"&gt;&lt;strong&gt;Additional Description: &lt;/strong&gt;".$_POST['resourcedescription']."&lt;/p&gt;<br/>");
+} else {}
+
+if (!empty($_POST['resourcedate'])){
+echo("&lt;p class=\"posttext\"&gt;&lt;strong&gt;Date: &lt;/strong&gt;".$_POST['resourcedate']."&lt;/p&gt;<br/>");
+} else {}
+
+if (!empty($_POST['resourcepartof'])){
+echo("&lt;p class=\"posttext\"&gt;&lt;strong&gt;Related resource: &lt;/strong&gt;".$_POST['resourcepartof']."&lt;/p&gt;&lt;BR/&gt;<br/><br/>");
+} else {}
+
+if (!empty($_POST['resourcetoc'])){
+echo("&lt;p class=\"posttext\"&gt;&lt;strong&gt;Table of Contents: &lt;/strong&gt;".$_POST['resourcetoc']."&lt;/p&gt;&lt;BR/&gt;<br/><br/>");
+} else {}
+
+
+
+
+
+$resourcetype = $_POST['resourcetype'];
+
+
+//Format specific embed code goes below here. For example, you would specify the embed code for an INTERACTIVE RESOURCE here so that it would display for visitors to the Wordpress site.
+
+if($resourcetype == "Text") {
+	echo("[spiderpowa-pdf src=\"".$_POST['resourceURL']."\"]&lt;BR/&gt;");
+}
+
+if($resourcetype == "Sound") {
+	$resourceURL = str_replace('flac', 'mp3', $_POST['resourceURL']);
+	echo("[audio mp3=\"".$resourceURL."\"][/audio]");
+	echo("&lt;div class=\"transcriptionwrapper\"&gt;&lt;p class=\"transcriptionheader\"&gt;");
+	echo("Transcription&lt;/p&gt;&lt;div class=\"transcription\"&gt;&lt;!-- Type transcription here --&gt;&lt;/div&gt;&lt;/div&gt;");
+} else {}
+
+if($resourcetype == "StillImage") {
+	echo("&lt;img style=\"width: 80%;\" src=\"".$_POST['resourceURL']."\"&gt;");
+} else {}
+
+if($resourcetype == "Collection") {
+	
+} else {}
+
+if($resourcetype == "InteractiveResource") {
+	
+} else {}
+
+if($resourcetype == "MovingImage") {
+	echo("&lt;iframe width=\"480\" height=\"360\" src=\"".$_POST['resourceURL']."\" frameborder=\"0\" allowfullscreen&gt;&lt;/iframe&gt;&lt;BR/&gt;&lt;p class=\"posttext\"&gt;&lt;strong&gt;Video File: Contact &lt;a href=\"mailto:sahteach@uw.edu\"&gt;sahteach@uw.edu&lt;/a&gt; for info on getting the raw video file. The file is streamable above from YouTube.&lt;/strong&gt;&lt;/p&gt;");
+}
+
+
+echo("&lt;div class=\"olacwrapper\"&gt;<BR/>");
+echo("&lt;p class=\"olacheader\"&gt;&lt;A HREF=\"http://www.language-archives.org/OLAC/1.1/\"&gt;OLAC&lt;/A&gt; metadata:&lt;/p&gt;<br/>");
+echo("&lt;div class=\"xmlwrapper\"&gt;<br/><br/>");
+
+echo("[sourcecode language=\"xml\"]<br/><br/>");
+
+echo("&lt;?xml version=\"1.0\" encoding=\"utf-8\" ?&gt;<br/>");
+echo("&lt;olac:olac xmlns:olac=\"http://www.language-archives.org/OLAC/1.1/\"<br/>");
+echo("xmlns:dc=\"http://purl.org/dc/elements/1.1/\"<br/>");
+echo("xmlns:dcterms=\"http://purl.org/dc/terms/\"<br/>");
+echo("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"<br/>");
+echo("xsi:schemaLocation=\"http://www.language-archives.org/OLAC/1.1/<br/>");
+echo("http://www.language-archives.org/OLAC/1.1/olac.xsd\"&gt;<br/>");
+
+echo("&lt;dcterms:identifier xsi:type=\"dcterms:URI\"&gt;".$_POST['resourceFilename']."&lt;/dcterms:identifier&gt;<br/>");
+
+if (isset($_POST['access'])){
+	echo("&lt;dcterms:accessRights&gt;restricted access to Yakama members&lt;/dcterms:accessRights&gt;<br/>");
+} else {
+	echo("&lt;dcterms:accessRights&gt;open access&lt;/dcterms:accessRights&gt;<br/>");
+}
+echo("&lt;dc:subject xsi:type=\"olac:linguistic-field\" olac:code=\"".$_POST['lingfield']."\"/&gt;<br/>");
+echo("&lt;dc:language xsi:type=\"olac:language\" olac:code=\"yak\"/&gt;<br/>");	
+echo("&lt;dc:language xsi:type=\"olac:language\" olac:code=\"en\"/&gt;<br/>");
+echo("&lt;dc:subject xsi:type=\"olac:language\" olac:code=\"yak\"/&gt;<br/>");
+
+
+if (!empty($_POST['speaker'])){
+	echo("&lt;dc:contributor xsi:type=\"olac:role\" olac:code=\"speaker\"&gt;".$_POST['speaker']."&lt;/dc:contributor&gt;<br/>");
+} 
+
+echo("&lt;dc:contributor xsi:type=\"olac:role\" olac:code=\"compiler\"&gt;Virginia Beavert&lt;/dc:contributor&gt;<br/>");
+echo("&lt;dc:contributor xsi:type=\"olac:role\" olac:code=\"depositor\"&gt;Edward James&lt;/dc:contributor&gt;<br/>");
+echo("&lt;dc:contributor xsi:type=\"olac:role\" olac:code=\"depositor\"&gt;Mary James&lt;/dc:contributor&gt;<br/>");
+echo("&lt;dc:contributor xsi:type=\"olac:role\" olac:code=\"depositor\"&gt;Sharon Hargus&lt;/dc:contributor&gt;<br/>");	
+echo("&lt;dc:contributor xsi:type=\"olac:role\" olac:code=\"depositor\"&gt;Russell Hugo&lt;/dc:contributor&gt;<br/>");
+
+
+if (!empty($_POST['depositor'])){
+	echo("&lt;dc:contributor xsi:type=\"olac:role\" olac:code=\"depositor\"&gt;".$_POST['depositor']."&lt;/dc:contributor&gt;<br/>");
+} 
+
+echo("&lt;dc:title&gt;".$_POST['resourcetitle']."&lt;/dc:title&gt;<br/>");
+echo("&lt;dc:subject&gt;".$_POST['resourcesubject']."&lt;/dc:subject&gt;<br/>");
+echo("&lt;dc:date xsi:type=\"dcterms:W3CDTF\"&gt;".$_POST['resourcedate']."&lt;/dc:date&gt;<br/>");
+echo("&lt;dc:description&gt;".$_POST['resourcedescription']."&lt;/dc:description&gt;<br/>");
+
+if (!empty($_POST['resourcecreated'])){
+	echo("&lt;dcterms:created&gt;".$_POST['resourcecreated']."&lt;/dcterms:created&gt;<br/>");	
+}
+
+echo("&lt;dcterms:tableOfContents&gt;".$_POST['resourcetoc']."&lt;/dcterms:tableOfContents&gt;<br/>");
+echo("&lt;dc:type xsi:type=\"dcterms:DCMIType\"&gt;".$_POST['resourcetype']."&lt;/dc:type&gt;<br/>");
+
+echo("&lt;dc:type xsi:type=\"olac:linguistic-type\" olac:code=\"".$_POST['linguistictype']."\"/&gt;<br/>");
+
+echo("&lt;dc:format xsi:type=\"dcterms:IMT\"&gt;".$_POST['resourceformat']."&lt;/dc:format&gt;<br/>");
+
+if (!empty($_POST['resourcepartof'])){
+	echo("&lt;dcterms:isPartOf&gt;".$_POST['resourcepartof']."&lt;/dcterms:isPartOf&gt;<br/>");
+} else {}
+
+echo("&lt;dc:publisher&gt;".$_POST['publisher']."&lt;/dc:publisher&gt;<br/>");
+echo("&lt;dcterms:spatial xsi:type=\"dcterms:TGN\"&gt;Yakima Valley&lt;/dcterms:spatial&gt;<br/>");
+echo("&lt;dcterms:provenance&gt;The materials were used or developed by Virginia Beavert and recorded by one of her students, Edward James, for a class taught at Heritage University (then Heritage College) during approximately 1987-2000. These materials were given to Sharon Hargus by Edward James' widow, Mary James to be archived. The materials were sorted, scanned, tagged and prepared for archiving by Russell Hugo under the supervision of Sharon Hargus.&lt;/dcterms:provenance&gt;<br/>");
+echo("&lt;/olac:olac&gt;<br/><br/>");
+echo("[/sourcecode]");
+echo("&lt;/div&gt;<br/>");
+	
+}
+?>
+
+
+
+
+</div>
+</div>
+
+<!--Start left column-->
+<div style="width: 38%;">
+
+	<div style="width: 100%; background-color: #637ED5; text-align: center; height: 35px; margin: 0;">
+		<h3 style="color: #fff; position: relative; top: 5px;">Input Fields</h3>
+	</div>
+	
+	<div style="width: 100%; background-color: #ccc; text-align: left; height: 100%; margin: 0;">
+
+		<form method="post">
+			<br/>
+			
+			<div style="margin: 0 auto; width: 75%;">
+				<input type="submit" name="submit" value="Submit" style="width: 100%; height: 40px; color: #fff; background-color:#7DD463; text-align: center;"/>
+			</div><br/>
+			
+			<div style="width: 400px; margin: 0 auto;">
+				<p><input type="text" name="resourcetitle" value=""/> :Title</p>
+				<!--<p><input type="text" name="additional" value=""/> :Additional</p>-->
+				<p><input type="text" name="resourcedate" value=""/> :Date</p>
+				<p><input type="text" name="resourcedescription" value=""/> :Description</p>
+				<p><input type="text" name="resourceURL" value=""/> :Resource URL</p>	
+				<p><input type="text" name="resourceFilename" value=""/> :Filename (URN)</p>	
+			
+				<p>
+					<select name="resourcetype">
+						<option value="Text">Text</option>
+						<option value="Sound">Sound</option>
+						<option value="StillImage">StillImage</option>
+						<option value="Collection">Collection</option>
+						<option value="MovingImage">MovingImage</option>
+						<option value="InteractiveResource">InteractiveResource</option>
+					</select> :Type
+				</p>
+				
+				<p>
+					<select name="linguistictype">
+						<option value="language_description">language_description</option>
+						<option value="lexicon">lexicon</option>
+						<option value="primary_text">primary_text</option>
+						<option value="">none</option>
+					</select> :Linguistic Type
+				</p>
+				
+				<p>
+					<select name="resourceformat">
+						<option value="application/pdf">PDF</option>
+						<option value="application/mp3">MP3</option>
+						<option value="application/wav">WAV</option>
+						<option value="application/flac">FLAC</option>
+						<option value="application/doc">DOC</option>
+						<option value="application/txt">TXT</option>
+						<option value="application/jpg">JPEG</option>
+						<option value="application/tif">TIF</option>
+						<option value="application/mp4">MP4</option>
+						<option value="application/avi">AVI</option>
+					</select> :Format
+				</p>
+				
+				<p><input type="text" name="resourcetoc" value=""/> :Table of Contents</p>
+				<p><input type="text" name="resourcepartof" value=""/> :Associated collection</p>
+				<p><input type="text" name="lingfield" value="applied_linguistics"/> :Linguistic Field</p>
+				<p><input type="text" name="resourcesubject" value="Teaching the Sahaptin/Yakama Language"/> :Subject</p>
+				<p><input type="text" name="publisher" value=""/> :Publisher</p>
+				<p><input type="text" name="speaker" value=""/> :Speaker Name</p>
+				<p><input type="text" name="depositor" value=""/> :Extra Depositor Name</p>
+				<p><input type="text" name="resourcecreated" value=""/> :Additional Date</p>
+				<p><input type="checkbox" name="access" value="php" /> :Restricted Access</p>
+				<br/>
+
+			</div>
+		</form>
+	</div>
+</div>
+
+</body>
+</html>
